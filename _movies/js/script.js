@@ -1,43 +1,56 @@
 "use strict";
 
-const personalMovieDB = {
-    count: countMuvies(),
+var personalMovieDB = {
+    count: null,
     movies: {},
     actors: {},
     genres: [],
     private: false
 };
 
-lastFilms(2);
+start();
+//rememberMyFilms(0);
+writeYourGenres(3);
+//detectPersonalLevel();
+showMyDB();
 
-// const a = prompt('Один из последних просмотренных фильмов?', ''),
-//       b = +prompt('На сколько его оцените?', ''),
-//       c = prompt('Один из последних просмотренных фильмов?', ''),
-//       d = +prompt('На сколько его оцените?', '');
+function showMyDB(){
+    if(!personalMovieDB.private){
+        console.log(personalMovieDB);
+    }
+}
 
-// personalMovieDB.movies[a] = b;
-// personalMovieDB.movies[c] = d;
+function writeYourGenres(count){
+    for(let i = 0; i < count; i++){
+        let ganre = question(`Ваш любимый жанр под номером ${i + 1}`);
+        personalMovieDB.genres[i] = ganre;
+    }
+}
 
-console.log(personalMovieDB);
-
-function lastFilms(countAnswer){
+function rememberMyFilms(countAnswer){
     for(let i = 0; i < countAnswer; i++){
         let name = question('Один из последних просмотренных фильмов?');
-        while(name == null || name.length > 50) {
-            alert("Название фильма должно содержать не более 50 символов или быть пустым");
+        while(name.length > 50) {
             name = question('Один из последних просмотренных фильмов?');
         }
         let rating = +question('На сколько его оцените?');
         while(rating > 10 || rating < 0 || isNaN(rating)) {
-            alert("Рейтинг должен быть от 0 до 10");
             rating = +question('На сколько его оцените?');
         }
         personalMovieDB.movies[name] = rating;
     }
 }
 
-function countMuvies(){
+function start(){
     let numberOfFilms = +question('Сколько фильмов вы уже посмотрели?');
+    while(isNaN(numberOfFilms)) {
+        numberOfFilms = +question('Сколько фильмов вы уже посмотрели?');
+    }
+    personalMovieDB.count = numberOfFilms;
+}
+
+function detectPersonalLevel(){
+    let numberOfFilms = personalMovieDB.count;
     if(numberOfFilms < 10 && numberOfFilms > 0) {
         alert("Просмотрено довольно мало фильмов");
     } else if(numberOfFilms >= 10 && numberOfFilms < 30) {
@@ -45,15 +58,14 @@ function countMuvies(){
     } else if (numberOfFilms >= 30) {
         alert("Вы киноман");
     } else {
-        alert("Произошла ошибка, ответе заново");
-        numberOfFilms = countMuvies();
+        alert("Произошла ошибка");
     }
     return numberOfFilms;
 }
 
 function question(questionText){
     const answer = prompt(questionText, '');
-    if (answer == ''){
+    if (answer == '' || answer == null){
         alert("Ответ не должен быть пустым");
         return question(questionText);
     } else {
