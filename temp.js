@@ -1,4 +1,15 @@
 "use strict";
 
-const logg = "0123456789";
-console.log(logg.slice(0, 2));
+const obj = {
+    name: "vova",
+    credentions: {
+        login: "log",
+        pass: "12345"
+    }
+};
+
+const add = {
+    isTrue: true
+};
+
+console.log(Object.assign(obj, add.isTrue));
